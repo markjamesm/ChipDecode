@@ -13,4 +13,4 @@ directory as the ChipDecode executable.
 ChipDecode will then read the ROM and output a text file in the program 
 directory containing the decoded instructions.
 
-For convenience, some test ROMs are located in the ChipDecode/Roms folder.
+For convenience, some test ROMs are located in the [roms directory](/roms).
