@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "filehelpers.h"
+#include "../include/filehelpers.h"
 
 // We can't return an array here, so we must return a pointer
 // to an array.

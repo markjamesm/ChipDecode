@@ -10,6 +10,8 @@ else()
     add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-add_executable(ChipDecode main.c
-        filehelpers.c
-        filehelpers.h)
+add_executable(ChipDecode src/main.c
+        src/filehelpers.c
+        include/filehelpers.h
+        src/decoder.c
+        include/decoder.h)
