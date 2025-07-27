@@ -45,14 +45,15 @@ char *get_filepath(const char *working_directory, const char *filename) {
 
     if(directory_length >= SIZE_MAX - filename_length || directory_length + filename_length + 1 == SIZE_MAX)
     {
-        /* is the size representable? */
-        /* handle errors */
+        fputs("Error: Directory length exceeds max size.\n",stderr);
+        exit(EXIT_FAILURE);
     }
 
     char *result = malloc(directory_length + filename_length + 2);
 
     if(!result){
-        /* handle errors */
+        fputs("Error allocating filepath memory.\n",stderr);
+        exit(EXIT_FAILURE);
     }
 
     memcpy(result, working_directory, directory_length);
