@@ -7,4 +7,4 @@
 
 #endif //DECODER_H
 
-void decode(const unsigned char *instruction_bytes);
+void disassemble(const char *filename);

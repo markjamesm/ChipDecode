@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/decoder.h"
+#include "../include/disassembler.h"
+
+#include <secure/_string.h>
 
 void decode_0000(const unsigned short instruction) {
     switch (instruction & 0x0FFF) {
@@ -45,5 +47,37 @@ void decode(const unsigned char *instruction_bytes) {
         default:
             printf("Unknown opcode: %04X\n", instruction);
             break;
+    }
+}
+
+void disassemble(const char *filename) {
+    unsigned char buffer[2];
+    FILE *file = fopen(filename, "rb");
+
+    if (file)
+    {
+        while (fread(buffer, 1, sizeof(buffer), file) != 0)
+        {
+            unsigned char *instruction_bytes = malloc(sizeof(char) * 2 + 1);
+            memcpy(instruction_bytes, buffer, 2);
+            decode(instruction_bytes);
+
+            free(instruction_bytes);
+        }
+
+        if (ferror(file)) {
+            fputs("I/O error while reading file\n",stderr);
+            exit(EXIT_FAILURE);
+        }
+
+        if (feof(file)) {
+            printf("End of file was reached successfully");
+            fclose(file);
+        }
+    }
+
+    else {
+        fputs("Error reading file\n",stderr);
+        exit(EXIT_FAILURE);
     }
 }

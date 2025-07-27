@@ -12,5 +12,5 @@ endif()
 add_executable(ChipDecode src/main.c
         src/filehelpers.c
         include/filehelpers.h
-        src/decoder.c
-        include/decoder.h)
+        src/disassembler.c
+        include/disassembler.h)
