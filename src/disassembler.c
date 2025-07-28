@@ -17,6 +17,40 @@ void decode_0000(const uint16_t instruction, FILE *output_file) {
     }
 }
 
+void decode_F000(const uint16_t instruction, FILE *output_file, uint8_t x) {
+    switch (instruction & 0x00FF) {
+        case 0x0007:
+            fprintf(output_file, "v%X := delay\n", x);
+            break;
+        case 0x000A:
+            fprintf(output_file, "v%X := key\n", x);
+            break;
+        case 0x0015:
+            fprintf(output_file, "delay := v%X\n", x);
+            break;
+        case 0x0018:
+            fprintf(output_file, "buzzer := v%X\n", x);
+            break;
+        case 0x001E:
+            fprintf(output_file, "i += v%X\n", x);
+            break;
+        case 0x0029:
+            fprintf(output_file, "i := hex v%X\n", x);
+            break;
+        case 0x0033:
+            fprintf(output_file, "bcd v%X\n", x);
+            break;
+        case 0x0055:
+            fprintf(output_file, "save v%X\n", x);
+            break;
+        case 0x0065:
+            fprintf(output_file, "load v%X\n", x);
+            break;
+        default:
+            break;
+    }
+}
+
 void decode(const uint8_t *instruction_bytes, FILE *output_file) {
     if (!instruction_bytes) {
         fputs("Error reading instruction\n",stderr);
@@ -55,6 +89,8 @@ void decode(const uint8_t *instruction_bytes, FILE *output_file) {
         case 0xD000:
             fprintf(output_file, "sprite v%X v%X 0x%X\n", x, y, n);
             break;
+        case 0xF000:
+            decode_F000(instruction, output_file, x);
         default:
             printf("Unknown opcode: %04X\n", instruction);
             break;
