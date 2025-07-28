@@ -17,7 +17,20 @@ void decode_0000(const uint16_t instruction, FILE *output_file) {
     }
 }
 
-void decode_F000(const uint16_t instruction, FILE *output_file, uint8_t x) {
+void decode_E000(const uint16_t instruction, FILE *output_file, const uint8_t x) {
+    switch (instruction & 0x00FF) {
+        case 0x009E:
+            fprintf(output_file, "if v%X -key then\n", x);
+            break;
+        case 0x00A1:
+            fprintf(output_file, "if v%X key then\n", x);
+        default:
+            break;
+
+    }
+}
+
+void decode_F000(const uint16_t instruction, FILE *output_file, const uint8_t x) {
     switch (instruction & 0x00FF) {
         case 0x0007:
             fprintf(output_file, "v%X := delay\n", x);
@@ -91,6 +104,7 @@ void decode(const uint8_t *instruction_bytes, FILE *output_file) {
             break;
         case 0xF000:
             decode_F000(instruction, output_file, x);
+            break;
         default:
             printf("Unknown opcode: %04X\n", instruction);
             break;
