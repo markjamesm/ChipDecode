@@ -76,7 +76,7 @@ void decode(const uint8_t *instruction_bytes, FILE *output_file) {
     const uint8_t y = (instruction & 0x00F0) >> 4;
     const uint8_t n = instruction & 0x000F;
     const uint8_t nn = instruction & 0x00FF;
-    const uint8_t nnn = instruction & 0x0FFF;
+    const uint16_t nnn = instruction & 0x0FFF;
 
     switch (instruction & 0xF000) {
         case 0x0000:
