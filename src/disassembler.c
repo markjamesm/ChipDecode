@@ -4,7 +4,7 @@
 
 #include "../include/disassembler.h"
 
-void decode_0000(const unsigned short instruction, FILE *output_file) {
+void decode_0000(const uint16_t instruction, FILE *output_file) {
     switch (instruction & 0x0FFF) {
         case 0x00E0:
             fprintf(output_file, "clear\n");
@@ -17,19 +17,19 @@ void decode_0000(const unsigned short instruction, FILE *output_file) {
     }
 }
 
-void decode(const unsigned char *instruction_bytes, FILE *output_file) {
+void decode(const uint8_t *instruction_bytes, FILE *output_file) {
     if (!instruction_bytes) {
         fputs("Error reading instruction\n",stderr);
         exit(EXIT_FAILURE);
     }
 
-    const unsigned short instruction = (unsigned) instruction_bytes[0] << 8 | instruction_bytes[1];
+    const uint16_t instruction = (unsigned) instruction_bytes[0] << 8 | instruction_bytes[1];
 
-    const unsigned char x = (instruction & 0x0F00) >> 8;
-    const unsigned char y = (instruction & 0x00F0) >> 4;
-    const unsigned char n = instruction & 0x000F;
-    const unsigned char nn = instruction & 0x00FF;
-    const unsigned char nnn = instruction & 0x0FFF;
+    const uint8_t x = (instruction & 0x0F00) >> 8;
+    const uint8_t y = (instruction & 0x00F0) >> 4;
+    const uint8_t n = instruction & 0x000F;
+    const uint8_t nn = instruction & 0x00FF;
+    const uint8_t nnn = instruction & 0x0FFF;
 
     switch (instruction & 0xF000) {
         case 0x0000:
@@ -80,7 +80,7 @@ void disassemble(const char *filename, const char *out_filename) {
     fprintf(output_file, ": main\n");
 
     while (fread(buffer, 1, sizeof(buffer), input_file) != 0) {
-        unsigned char *instruction_bytes = malloc(sizeof(char) * 2 + 1);
+        uint8_t *instruction_bytes = malloc(sizeof(char) * 2 + 1);
         memcpy(instruction_bytes, buffer, 2);
         decode(instruction_bytes, output_file);
         free(instruction_bytes);
