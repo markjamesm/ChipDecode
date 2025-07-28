@@ -85,23 +85,41 @@ void decode(const uint8_t *instruction_bytes, FILE *output_file) {
         case 0x1000:
             fprintf(output_file, "jump 0x%X\n", nnn);
             break;
+        case 0x2000:
+            fprintf(output_file, ":call 0x%X\n", nnn);
+            break;
         case 0x3000:
             fprintf(output_file, "if v%X != 0x%X then\n", x, nn);
+            break;
+        case 0x4000:
+            fprintf(output_file, "if v%X == 0x%X then\n", x, nn);
             break;
         case 0x6000:
             fprintf(output_file, "v%X := 0x%X\n", x, nn);
             break;
         case 0x7000:
             fprintf(output_file, "v%X += 0x%X\n", x, nn);
+            break;
         case 0x8000:
             // Decode8000()
+            break;
+        case 0x9000:
+            fprintf(output_file, "if v%X == v%X then\n", x, y);
             break;
         case 0xA000:
             fprintf(output_file, "i := 0x%X\n", nnn);
             break;
+        case 0xB000:
+            fprintf(output_file, "jump0 0x%X\n", nnn);
+            break;
+        case 0xC000:
+            fprintf(output_file, "v%X := random 0x%X\n", x, nn);
+            break;
         case 0xD000:
             fprintf(output_file, "sprite v%X v%X 0x%X\n", x, y, n);
             break;
+        case 0xE000:
+            decode_E000(instruction, output_file, x);
         case 0xF000:
             decode_F000(instruction, output_file, x);
             break;
