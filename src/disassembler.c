@@ -8,11 +8,9 @@ void decode_0000(const unsigned short instruction, FILE *output_file) {
     switch (instruction & 0x0FFF) {
         case 0x00E0:
             fprintf(output_file, "0x%04X: Clear the screen\n", instruction);
-            // printf("0x%04X: Clear the screen\n", instruction);
             break;
         case 0x00EE:
             fprintf(output_file, "0x%04X: Return from subroutine to address pulled from stack\n", instruction);
-            // printf("0x%04X: Return from subroutine to address pulled from stack\n", instruction);
             break;
         default:
             break;
@@ -22,11 +20,6 @@ void decode_0000(const unsigned short instruction, FILE *output_file) {
 void decode(const unsigned char *instruction_bytes, FILE *output_file) {
     if (!instruction_bytes) {
         fputs("Error reading instruction\n",stderr);
-        exit(EXIT_FAILURE);
-    }
-
-    if (!output_file) {
-        fputs("I/O error\n",stderr);
         exit(EXIT_FAILURE);
     }
 
