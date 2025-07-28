@@ -7,10 +7,10 @@
 void decode_0000(const unsigned short instruction, FILE *output_file) {
     switch (instruction & 0x0FFF) {
         case 0x00E0:
-            fprintf(output_file, "0x%04X: Clear the screen\n", instruction);
+            fprintf(output_file, "%04X: Clear the screen\n", instruction);
             break;
         case 0x00EE:
-            fprintf(output_file, "0x%04X: Return from subroutine to address pulled from stack\n", instruction);
+            fprintf(output_file, "%04X: Return from subroutine to address pulled from stack\n", instruction);
             break;
         default:
             break;
@@ -53,7 +53,7 @@ void decode(const unsigned char *instruction_bytes, FILE *output_file) {
             fprintf(output_file, "A: Set I to 0x%X\n", nnn);
             break;
         case 0xD000:
-            fprintf(output_file, "D: Draw 8x[0x%X] pixel sprite at position v[0x%X], v[0x%X] with data starting at the address in I\n", n, x, y);
+            fprintf(output_file, "D: Draw (8 * 0x%X) pixel sprite at position v[0x%X], v[0x%X] with data starting at the address in I\n", n, x, y);
             break;
         default:
             printf("Unknown opcode: %04X\n", instruction);
