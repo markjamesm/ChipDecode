@@ -7,4 +7,4 @@
 
 #endif //DECODER_H
 
-void disassemble(const char *filename);
+void disassemble(const char *filename, const char *out_filename);

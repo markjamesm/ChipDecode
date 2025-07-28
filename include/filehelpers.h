@@ -7,6 +7,6 @@
 
 #endif //FILEHELPERS_H
 
-char* get_working_directory(void);
+void clear_output_file(const char *filename);
 
-char *get_filepath(const char *working_directory, const char *filename);
+char *generate_output_filename(const char *filename);

@@ -9,15 +9,12 @@
 
 int main(const int argc, char *argv[]) {
     if (argc == 2) {
-        // get_filepath should create its own string, then the
-        // caller code will be clearer: it needs two frees to
-        // free both strings
-        char *working_directory = get_working_directory();
-        char *filepath = get_filepath(working_directory, argv[1]);
+        const char *filename = argv[1];
+        char *output_filename = generate_output_filename(filename);
 
-        disassemble(filepath);
-        free(working_directory);
-        free(filepath);
+        clear_output_file(output_filename);
+        disassemble(filename, output_filename);
+        free(output_filename);
 
         return 0;
     }

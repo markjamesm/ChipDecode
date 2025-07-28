@@ -1,9 +1,3 @@
-#ifdef __STDC_ALLOC_LIB__
-#define __STDC_WANT_LIB_EXT2__ 1
-#else
-#define _POSIX_C_SOURCE 200809L
-#endif
-
 #include <stdint.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -11,60 +5,35 @@
 #include <string.h>
 #include "../include/filehelpers.h"
 
-// We can't return an array here, so we must return a pointer
-// to an array.
-char *get_working_directory(void) {
-    char cwd[PATH_MAX];
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+char *generate_output_filename(const char *filename) {
+    const char *file_extension = strrchr(filename, '.');
+    const char *output_extension = ".txt";
+    const size_t filename_length = file_extension - filename;
+    const size_t extension_length = strlen(output_extension);
 
-        // Returns a pointer to a null-terminated byte string,
-        // which is a duplicate of the string pointed to by str1.
-        // The returned pointer must be passed to free to avoid a memory leak.
-        // If an error occurs, a null pointer is returned and errno may be set.
-        char *working_dir = strdup(cwd);
+    char *output_filename = malloc(filename_length + extension_length + 1);
 
-        if (working_dir == NULL) {
-            fputs("Error getting working directory\n",stderr);
-            exit(EXIT_FAILURE);
-        }
-
-        return working_dir;
-    }
-
-    fputs("Error getting working directory\n",stderr);
-    exit(EXIT_FAILURE);
-}
-
-// Don't use strcat() to concatenate the directory and filename
-// because it's appending to the first string. The first strcat
-// would immediately write out of bounds because strdup() allocates
-// just enough to hold the string.
-char *get_filepath(const char *working_directory, const char *filename) {
-    size_t directory_length = strlen(working_directory);
-    size_t filename_length = strlen(filename);
-
-    if(directory_length >= SIZE_MAX - filename_length || directory_length + filename_length + 1 == SIZE_MAX)
-    {
-        fputs("Error: Directory length exceeds max size.\n",stderr);
-        exit(EXIT_FAILURE);
-    }
-
-    char *result = malloc(directory_length + filename_length + 2);
-
-    if(!result){
+    if(!output_filename){
         fputs("Error allocating filepath memory.\n",stderr);
         exit(EXIT_FAILURE);
     }
 
-    memcpy(result, working_directory, directory_length);
+    memcpy(output_filename, filename, filename_length);
+    memcpy(output_filename + filename_length, output_extension, extension_length + 1);
 
-    // directory_length is the position of the null terminator
-    result[directory_length] = '/';
+    output_filename[filename_length + extension_length + 1] = 0;
 
-    memcpy(result + directory_length + 1, filename, filename_length);
+    printf("Extension File: %s\n", output_filename);
+    return output_filename;
+}
 
-    // Add the null terminator at the end
-    result[directory_length + filename_length + 1] = 0;
+void clear_output_file(const char *filename) {
+    FILE *output_file = fopen(filename, "w");
+    if (!output_file)
+    {
+        fputs("Error opening file\n",stderr);
+        exit(EXIT_FAILURE);
+    }
 
-    return result;
+    fclose(output_file);
 }
